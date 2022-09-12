@@ -10,29 +10,37 @@ define( ["qlik"],
 			},
 			paint: function($element, layout) {
 				app = qlik.currApp(this);
-				app.getObject("EPeuAg").then(model => {
+				app.getObject("JtsghN").then(model => {
 
-                    function getData(){
+                    function getData(tw, th){
 						var a = [];
-						for(let i=0; i<2; i++){
-								model.getHyperCubeData('/qHyperCubeDef', [
-									{
-										"qLeft": 0,
-										"qTop": i*6,
-										"qWidth": 2,
-										"qHeight": 6
-									}
-								]).then(data =>  a.push(data[0].qMatrix))
-							
-						}; 
-						return a;
-                      };
+                            model.getHyperCubeData('/qHyperCubeDef', [
+                                {
+                                    "qLeft": 0,
+                                    "qTop": 0,
+                                    "qWidth": 2,
+                                    "qHeight": 10
+                                }]).then(data => {
+                                    let myMatrix = [];
+                                    for(i=0 ; i<10; i++){
+                                        let myRow = [];
+                                        for(j=0; j<tw; j++){
+                                            myRow.push(data[0].qMatrix[i][j].qText)
+                                        }
+                                        myMatrix.push(myRow);
+                                    };
+                                    let myJSONString = JSON.stringify(myMatrix)
+                                    console.log(myJSONString)
+
+                                    return myJSONString;
+                                })
+                    };
 
                     model.getLayout().then(data => {
                         let tableWidth = data.qHyperCube.qSize.qcx;
                         let tableHeight = data.qHyperCube.qSize.qcy;
                         console.log('Layout ',tableWidth, tableHeight);
-                        console.log(getData());
+                        getData(tableWidth,tableHeight);
                     });
 
 			});
