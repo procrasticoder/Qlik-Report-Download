@@ -61,12 +61,26 @@ define( ["qlik", "text!./template.html"],
                     });
                 };
 
+				//initializing function to get table names
+				function getTablesName(tableId) {
+                    app.getObject(tableId).then(model => {
+                        model.getLayout().then(data => {
+                            let tableWidth = data.qHyperCube.qSize.qcx;
+                            let tableHeight = data.qHyperCube.qSize.qcy;
+							console.log(model.layout.title)
+                            console.log('Layout ', tableWidth, tableHeight);
+                            getData(tableId, tableWidth, tableHeight);        //calling function to get tableData
+                        });
+                    });
+                };
+
                 //initializing function to get table layout
                 function tableLayout(tableId) {
                     app.getObject(tableId).then(model => {
                         model.getLayout().then(data => {
                             let tableWidth = data.qHyperCube.qSize.qcx;
                             let tableHeight = data.qHyperCube.qSize.qcy;
+							console.log(model.layout.title)
                             console.log('Layout ', tableWidth, tableHeight);
                             getData(tableId, tableWidth, tableHeight);        //calling function to get tableData
                         });
@@ -75,10 +89,13 @@ define( ["qlik", "text!./template.html"],
 
                 //calling function to get table layout
                 //tableLayout("BJQnb")   
-				let myArray = getTables(currentSheetId);
-				console.log(myArray)				
+				let targetElement = document.getElementById('btn');
+				targetElement.addEventListener('click',()=>{
+					let tableID = document.getElementById("my-choice").value;
+                    tableLayout(tableID)
+				});				
 				
-				$scope.html = currentSheetId;
+				$scope.tablesName = getTables(currentSheetId);
 
 			}]
 		};
