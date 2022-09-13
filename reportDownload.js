@@ -1,16 +1,19 @@
-define(["qlik"],
-    function (qlik, template) {
+define( ["qlik", "text!./template.html"],
+	function ( qlik, template ) {
 
-        return {
-            template: template,
-            support: {
-                snapshot: true,
-                export: true,
-                exportData: false
-            },
-            //paint method to render the code
-            paint: function ($element, layout) {
-                var app = qlik.currApp(this);       //defines app to workon
+		return {
+			template: template,
+			support: {
+				snapshot: true,
+				export: true,
+				exportData: false
+			},
+			paint: function () {
+				return qlik.Promise.resolve();
+			},
+			controller: ['$scope', function ( $scope ) {
+				//add your rendering code here
+				var app = qlik.currApp(this);       //defines app to workon
 				var currentSheet = qlik.navigation.getCurrentSheetId();
 				var currentSheetId = currentSheet.sheetId;
 				
@@ -73,10 +76,11 @@ define(["qlik"],
                 //calling function to get table layout
                 //tableLayout("BJQnb")   
 				let myArray = getTables(currentSheetId);
-				console.log(myArray)
-                return qlik.Promise.resolve()  //return value of paint
-            }
-            //paint method ends here
-        };
+				console.log(myArray)				
+				
+				$scope.html = currentSheetId;
 
-    });
+			}]
+		};
+
+	} );
