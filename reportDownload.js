@@ -1,4 +1,4 @@
-define( ["qlik", "text!./template.html"],
+ define( ["qlik", "text!./template.html"],
 	function ( qlik, template ) {
 
 		return {
@@ -37,12 +37,12 @@ define( ["qlik", "text!./template.html"],
                 //initializing function to get table data
                 function getData(tableName, tw, th) {
                     app.getObject(tableName).then(model => {
-                        var a = [];
+
                         model.getHyperCubeData('/qHyperCubeDef', [
                             {
                                 "qLeft": 0,
                                 "qTop": 0,
-                                "qWidth": 2,
+                                "qWidth": 0,
                                 "qHeight": 10
                             }]).then(data => {
                                 let myMatrix = [];
@@ -67,7 +67,6 @@ define( ["qlik", "text!./template.html"],
                         model.getLayout().then(data => {
                             let tableWidth = data.qHyperCube.qSize.qcx;
                             let tableHeight = data.qHyperCube.qSize.qcy;
-							console.log(model.layout.title)
                             console.log('Layout ', tableWidth, tableHeight);
                             getData(tableId, tableWidth, tableHeight);        //calling function to get tableData
                         });
@@ -82,7 +81,7 @@ define( ["qlik", "text!./template.html"],
                     tableLayout(tableID)
 				});				
 				
-				$scope.tablesName = getTables(currentSheetId);
+				$scope.html = currentSheetId;
 
 			}]
 		};
