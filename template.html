@@ -1,0 +1,9 @@
+<div qv-extension style="height: fit-content; position: relative; overflow: auto;" class="ng-scope">
+	{{ html }} 
+</div>
+
+<select name="my-Choice" id="my-choice" >
+	<option ng-repeat = "tableDetail in tableDetails" value="{{tableDetail.id}}">{{tableDetail.title}}</option>
+</select>
+
+<button id="btn">Click me</button>
